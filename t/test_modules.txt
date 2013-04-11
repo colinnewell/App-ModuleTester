@@ -1,0 +1,38 @@
+Test-* distributions broken by Test::Builder 1.5
+
+
+As of 63606c6 this is the list of Test-* distributions whose tests have been broken by Test::Builder 1.5. 104 out of 722 distributions are broken.
+
+A test is "broken" if it passes with stable and fails with the latest Test::Builder 1.5.
+
+They mostly fall into these categories...
+
+Failures in the test suite due to small changes in the TAP format
+Using private methods of Test::Builder which no longer exist
+Using Test::Builder->details() which is no longer populated by default
+Doing something complicated to the Test::Builder internals
+To help...
+
+Download the module from CPAN
+Run it with Test::More 0.98 to verify it works
+Run it with Test::More from the Test-Builder1.5 branch
+At that point you can...
+
+Patch the problem
+Send the patch to the module
+Open an issue stating you've sent on a patch
+Indicate whether your patch was only to the test suite or required fixing runtime code
+Or if it works now...
+
+Open an issue and let us know the distribution and version which works.
+Or if the problem is over your head...
+
+Open an issue with the distribution, version and test failure output.
+Acme::Test::Weather
+Apache::Test
+Bundle::Test::SQL::Statement
+CatalystX::Test::Recorder
+Kwiki::Test
+PITA::Test::Dummy::Perl5::Deps
+Plack::Test::ExternalServer
+

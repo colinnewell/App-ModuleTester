@@ -39,8 +39,10 @@ use Path::Tiny;
 sub read_issue_file
 {
     my $filename = shift;
-    my $data = path($filename)->slurp;
-    my @modules = /^(\w+(\:::\w+)*)$/mg;
+    my $path = path($filename);
+    die "$filename does not exist" unless $path->exists;
+    my $data = $path->slurp;
+    my @modules = $data =~ /^(\w+(?:::\w+)*)$/mg;
 }
 
 =head1 AUTHOR

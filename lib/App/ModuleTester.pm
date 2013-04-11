@@ -32,7 +32,7 @@ This application allows multiple modules to be tested.
 =cut
 
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(read_issue_file);
+our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build);
 
 use Path::Tiny;
 
@@ -43,6 +43,22 @@ sub read_issue_file
     die "$filename does not exist" unless $path->exists;
     my $data = $path->slurp;
     my @modules = $data =~ /^(\w+(?:::\w+)*)$/mg;
+}
+
+sub copy_latest_build
+{
+    my $module_name = shift;
+    my $fname = "$module_name-build.log";
+    path("~/.cpanm/latest-build/build.log")->copy($fname);
+    return $fname;
+}
+
+sub get_tarball_name
+{
+    my $log_file = shift;
+    my $log_contents = path($log_file)->slurp;
+    my ($tarball) = $log_contents =~ /^Unpacking (.*)$/m;
+    return $tarball;
 }
 
 =head1 AUTHOR

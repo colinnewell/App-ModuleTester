@@ -32,7 +32,7 @@ This application allows multiple modules to be tested.
 =cut
 
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build);
+our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build main);
 
 use Path::Tiny;
 
@@ -53,12 +53,33 @@ sub copy_latest_build
     return $fname;
 }
 
+sub copy_tarball
+{
+    my $tarball = shift;
+    path("~/.cpanm/latest-build/$tarball")->copy('.');
+}
+
 sub get_tarball_name
 {
     my $log_file = shift;
     my $log_contents = path($log_file)->slurp;
     my ($tarball) = $log_contents =~ /^Unpacking (.*)$/m;
     return $tarball;
+}
+
+sub main
+{
+    my $issue_list = shift;
+    die 'Must specify issue list' unless $issue_list;
+
+    my @modules = read_issue_file($issue_list);
+    for my $module (@modules)
+    {
+        system "cpanm --test-only $module";
+        my $log = copy_latest_build($module);
+        my $tarball = get_tarball_name($log);
+        copy_tarball($tarball);
+    }
 }
 
 =head1 AUTHOR

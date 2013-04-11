@@ -32,6 +32,7 @@ requires (
    'Modern::Perl' => 0,
    'Path::Tiny' => 0,
 );
+install_script 'bin/module-tester';
 
 install_as_cpan;
 auto_install;

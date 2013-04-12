@@ -33,6 +33,7 @@ requires (
    'Path::Tiny' => 0,
 );
 install_script 'bin/module-tester';
+install_script 'bin/test-tarballs';
 
 install_as_cpan;
 auto_install;

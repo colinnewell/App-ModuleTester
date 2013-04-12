@@ -1,0 +1,6 @@
+#!/usr/bin/perl
+
+use App::ModuleTester qw/test_existing/;
+
+test_existing(shift);
+

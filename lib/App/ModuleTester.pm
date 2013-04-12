@@ -17,7 +17,7 @@ Version 0.01
 our $VERSION = '0.01';
 
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build main modules_in_dir);
+our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build main modules_in_dir test_existing);
 
 use Path::Tiny;
 
@@ -57,6 +57,8 @@ by cpanm from te logfile specified.
 
 Extract the list of modules to test from the issue 
 text file specified.
+
+=head2 test_existing
 
 =cut
 
@@ -111,6 +113,22 @@ sub modules_in_dir
         }
     }
     return @modules;
+}
+
+sub test_existing
+{
+    my $directory = shift;
+    die 'Must specify directory' unless $directory;
+    my @modules = modules_in_dir($directory);
+
+    # figure out what version of test builder.
+    require Test::Builder;
+    print "$Test::Builder::VERSION\n";
+    for my $module (@modules)
+    {
+        system "cpanm --test-only $module";
+        my $log = copy_latest_build($module->basename);
+    }
 }
 
 sub main

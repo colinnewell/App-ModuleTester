@@ -17,7 +17,7 @@ Version 0.01
 our $VERSION = '0.01';
 
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build main);
+our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build main modules_in_dir);
 
 use Path::Tiny;
 
@@ -89,6 +89,28 @@ sub get_tarball_name
     my $log_contents = path($log_file)->slurp;
     my ($tarball) = $log_contents =~ /^Unpacking (.*)$/m;
     return $tarball;
+}
+
+=head2 modules_in_dir
+
+Returns a list of Path::Tiny objects for the tar balls
+in the directory passed to it.
+
+=cut
+
+sub modules_in_dir
+{
+    my $path = shift;
+    my $it = path($path)->iterator;
+    my @modules;
+    while ( my $next = $it->() )
+    {
+        if($next =~ /\.tar\.gz/)
+        {
+            push @modules, $next;
+        }
+    }
+    return @modules;
 }
 
 sub main

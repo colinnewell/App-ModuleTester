@@ -16,25 +16,49 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build main);
+
+use Path::Tiny;
+
 
 =head1 SYNOPSIS
 
 This application allows multiple modules to be tested.
 
-    use App::ModuleTester qw/read_issue_file/;
+    use App::ModuleTester qw/main/;
 
-    ...
+    main(shift);
 
 =head1 EXPORT
 
+=head2 main
+
+The whole command line program that loops through the
+list of modules to test from the issue report and
+runs cpan --test-only
+
+=head2 copy_latest_build
+
+Copy the most recent build log from the cpanm latest-build
+directory.
+
+=head2 copy_tarball
+
+Copy the tarball specified from the cpanm latest build
+directory to the current directory.
+
+=head2 get_tarball_name
+
+Extract the tarball name for the latest module tested
+by cpanm from te logfile specified.
+
 =head2 read_issue_file
 
+Extract the list of modules to test from the issue 
+text file specified.
+
 =cut
-
-our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(read_issue_file get_tarball_name copy_latest_build main);
-
-use Path::Tiny;
 
 sub read_issue_file
 {
